@@ -1,11 +1,6 @@
 <template>
   <div>
-    <div class="button">
-      <button v-on:click="login">登录</button>
-    </div>
-    <div class="button">
-      <button v-on:click="register">注册</button>
-    </div>
+    <h1>我是主页</h1>
   </div>
 </template>
 
@@ -14,14 +9,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    login() {
-      this.$router.push("/login");
-    },
-    register() {
-      this.$router.push("/register");
-    },
-  },
+  methods: {},
 };
 </script>
 

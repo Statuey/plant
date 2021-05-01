@@ -9,16 +9,69 @@
         <label for="choose">
           <span id="label">add an image</span>
         </label>
-        <input id="choose" type="file" accept="img" />
+        <input
+          id="choose"
+          type="file"
+          ref="fileInput"
+          accept="image/*"
+          @change="getImage"
+        />
       </div>
     </div>
-    <v-btn id="confirm" depressed elevation="4" outlined>开始识别</v-btn>
+    <div class="imagePanel">
+      <img :src="imageUrl" width="300" />
+    </div>
+    <v-btn id="confirm" depressed elevation="4" outlined v-on:click="identify"
+      >开始识别</v-btn
+    >
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "index",
+  data() {
+    return {
+      imageUrl: "",
+      imageType: "train",
+    };
+  },
+  methods: {
+    getImage(event) {
+      const self = this;
+      const files = event.target.files;
+      let filename = files[0].name;
+      if (filename.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid image!"); //判断图片是否有效
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        self.imageUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(files[0]);
+      this.image = files[0];
+      fileReader.onload = function () {
+        self.imageUrl = this.result;
+      };
+    },
+    identify(e) {
+      e.preventDefault();
+      let param = new FormData(); //创建form对象
+      param.append("file", this.image); //通过append向form对象添加数据
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      }; //添加请求头
+      axios
+        .post("/api/image/upload", param, config)
+        .then((res) => {
+          console.log(res.data.url);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>
 
@@ -71,5 +124,12 @@ export default {
   border-radius: 1ch;
   box-shadow: 0 0 4px #616161 inset;
   cursor: pointer;
+}
+.imagePanel {
+  width: 500px;
+  margin: auto auto;
+  text-align: center;
+  background-color: #000;
+  display: none;
 }
 </style>

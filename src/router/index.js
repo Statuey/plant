@@ -28,12 +28,18 @@ const routes = [{
   {
     path: '/database',
     name: 'database',
-    component: database
+    component: database,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/download',
     name: 'download',
-    component: download
+    component: download,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/home',
@@ -46,7 +52,10 @@ const routes = [{
   {
     path: '/tutorial',
     name: tutorial,
-    component: tutorial
+    component: tutorial,
+    meta: {
+      requireAuth: true
+    }
   }
 ]
 
@@ -62,7 +71,7 @@ router.beforeEach((to, from, next) => {
     if (token) {
       next()
     } else {
-      next("/login")
+      next("/")
     }
   } else {
     next();
