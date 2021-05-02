@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homepage">
     <h1>我是主页</h1>
   </div>
 </template>
@@ -17,4 +17,8 @@ export default {
 .button {
   text-align: center;
 }
+.homepage{
+  background-color: #1BC6A4;
+}
+
 </style>

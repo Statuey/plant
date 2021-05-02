@@ -6,7 +6,7 @@
           <img src="./assets/img/logo1.svg" width="60" alt="" />
         </router-link>
       </div>
-      <div class="rightPanel" v-if="visitor">
+      <div class="navitem" v-if="visitor">
         <div class="form1" @click="login">
           <a href="">登录</a>
         </div>
@@ -14,7 +14,10 @@
           <a href="">注册</a>
         </div>
       </div>
-      <div class="rightPanel" v-else>
+      <div class="navitem" v-else>
+        <div class="form1" @click="upload">
+          <a href="">上传图片</a>
+        </div>
         <div class="form1">
           <span v-show="NAME">你好！用户 {{ NAME }}</span>
         </div>
@@ -23,7 +26,10 @@
         </div>
       </div>
     </div>
-    <div class="container"><router-view></router-view></div>
+    <div class="container">
+      <router-view></router-view>
+      <div style="height: 5rem"></div>
+    </div>
     <div class="footer"><Footer></Footer></div>
   </div>
 </template>
@@ -55,6 +61,9 @@ export default {
       this.$router.push("/");
       console.log("注销成功！");
     },
+    upload(){
+      this.$router.push("/home");
+    },
     isVisitor() {
       var item = localStorage.getItem("user_ID");
       if (localStorage.getItem("access_token")) {
@@ -69,9 +78,11 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("access_token")) {
-      axios.defaults.headers.common = { Authorization: `Bearer ${localStorage.getItem("access_token")}` };
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      };
       this.visitor = false;
-      this.NAME=localStorage.getItem("user_ID");
+      this.NAME = localStorage.getItem("user_ID");
     } else {
       this.visitor = true;
     }
@@ -100,12 +111,16 @@ export default {
   float: left;
 }
 
+#app{
+  background-color: #1BC6A4;
+}
+
 a {
   text-decoration-line: none;
   color: #212529;
 }
 
-.rightPanel {
+.navitem {
   text-align: right;
 }
 

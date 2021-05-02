@@ -32,15 +32,16 @@ export default {
         })
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
-          localStorage.setItem("user_ID",this.username);
-          self.$router.push('/home');   
+          localStorage.setItem("user_ID", this.username);
+          axios.defaults.headers.common = { Authorization: `Bearer ${res.data.access_token}` };
+          self.$router.push("/home");
         })
         .catch((err) => {
           self.Tips = err.response.data.description;
         });
     },
     ToRegister() {
-      this.$router.push('/register')
+      this.$router.push("/register");
     },
   },
 };

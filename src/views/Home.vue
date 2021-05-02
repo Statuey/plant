@@ -1,29 +1,32 @@
 <template>
   <div class="container">
-    <div class="text-center">
-      <div class="intro">
-        <img src="../assets/img/logo1.svg" width="120" alt="" />
-        <span id="remind">"上传图片识别植物！"</span>
-      </div>
+      <h2>上传图片识别植物！</h2>
       <div class="upload">
-        <label for="choose">
-          <span id="label">add an image</span>
-        </label>
-        <input
-          id="choose"
-          type="file"
-          ref="fileInput"
-          accept="image/*"
-          @change="getImage"
-        />
+          <label for="choose">
+            <span id="label">add an image</span>
+          </label>
+          <input
+            id="choose"
+            type="file"
+            ref="fileInput"
+            accept="image/*"
+            @change="getImage"
+          />
+        </div>
+      <div class="imagePanel">
+        <img :src="imageUrl" width="300"/>
       </div>
-    </div>
-    <div class="imagePanel">
-      <img :src="imageUrl" width="300" />
-    </div>
-    <v-btn id="confirm" depressed elevation="4" outlined v-on:click="identify"
-      >开始识别</v-btn
-    >
+      
+      <v-btn
+        id="confirm"
+        color="blue-grey"
+        class="ma-2 white--text"
+        @click="identify"
+      >
+        上传识别
+        <v-icon right dark> mdi-cloud-upload </v-icon>
+      </v-btn>
+      <v-alert type="success" color="#91c788" v-if="state">上传成功</v-alert>
   </div>
 </template>
 
@@ -35,6 +38,7 @@ export default {
     return {
       imageUrl: "",
       imageType: "train",
+      state: false,
     };
   },
   methods: {
@@ -66,6 +70,7 @@ export default {
         .post("/api/image/upload", param, config)
         .then((res) => {
           console.log(res.data.url);
+          this.state = true;
         })
         .catch((error) => {
           console.log(error);
@@ -93,27 +98,16 @@ export default {
 }
 #confirm {
   display: block;
-  width: 100px;
   margin: 10px auto;
   height: 30px;
   transition: 0.2s linear;
 }
 
-.text-center {
-  background-color: #f8f9fa;
-  margin: 0px auto;
-  margin-top: 80px;
-  text-align: center;
-  border: solid;
-  border-width: 2px;
-  border-color: #f4f5f6;
-  border-radius: 2ch;
-  max-width: 600px;
-  height: 400px;
+.panel{
+  width: 50%;
+  float: left;
 }
-.intro {
-  margin: 80px auto;
-}
+
 .upload {
   height: 60px;
   border: solid;
@@ -129,7 +123,5 @@ export default {
   width: 500px;
   margin: auto auto;
   text-align: center;
-  background-color: #000;
-  display: none;
 }
 </style>
