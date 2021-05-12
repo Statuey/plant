@@ -1,10 +1,15 @@
 <template>
-  <div class="container">TUTORIAL PAGE!</div>
+  <div> 
+      <h1>lessions</h1>
+  </div>
 </template>
 
 <script>
 export default {
+
 }
 </script>
 
-<style></style>
+<style>
+
+</style>

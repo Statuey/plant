@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import home from '../views/home.vue'
-import database from '../views/database.vue'
+
 import download from '../views/download.vue'
 import login from '../views/login.vue'
 import register from '../views/register.vue'
-import tutorial from '../views/tutorial.vue'
+import testDatabase from '../views/testDatabase.vue'
 import index from '../views/index.vue'
+import trainManagement from '../views/trainManagement.vue'
+import testManagement from '../views/testManagement.vue'
+import lesionsManagement from '../views/lesionsManagement.vue'
+import testEnhance from '../views/testEnhance.vue'
+import modelManangement from '../views/modelManangement'
 
 Vue.use(VueRouter)
 
@@ -26,12 +31,44 @@ const routes = [{
     component: index
   },
   {
-    path: '/database',
-    name: 'database',
-    component: database,
+    path: '/database/trainManagement',
+    name: 'trainManagement',
     meta: {
       requireAuth: true
-    }
+    },
+    component: trainManagement,
+  },
+  {
+    path: '/database/testManagement',
+    name: 'testManagement',
+    meta: {
+      requireAuth: true
+    },
+    component: testManagement,
+  },
+  {
+    path: '/database/lesionsManagement',
+    name: 'lesionsManagement',
+    meta: {
+      requireAuth: true
+    },
+    component: lesionsManagement,
+  },
+  {
+    path: '/model/modelManangement',
+    name: 'modelManangement',
+    meta: {
+      requireAuth: true
+    },
+    component: modelManangement,
+  },
+  {
+    path: '/model/testEnhance',
+    name: 'testEnhance',
+    meta: {
+      requireAuth: true
+    },
+    component: testEnhance,
   },
   {
     path: '/download',
@@ -50,9 +87,9 @@ const routes = [{
     }
   },
   {
-    path: '/tutorial',
-    name: tutorial,
-    component: tutorial,
+    path: '/testDatabase',
+    name: testDatabase,
+    component: testDatabase,
     meta: {
       requireAuth: true
     }
