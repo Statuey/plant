@@ -39,12 +39,12 @@ const routes = [{
     component: trainManagement,
   },
   {
-    path: '/database/testManagement',
-    name: 'testManagement',
+    path: '/database/testDatabase',
+    name: 'testDatabase',
     meta: {
       requireAuth: true
     },
-    component: testManagement,
+    component: testDatabase,
   },
   {
     path: '/database/lesionsManagement',
@@ -87,13 +87,13 @@ const routes = [{
     }
   },
   {
-    path: '/testDatabase',
-    name: testDatabase,
-    component: testDatabase,
+    path: '/testManagement',
+    name: 'testManagement',
+    component: testManagement,
     meta: {
       requireAuth: true
     }
-  }
+  },
 ]
 
 const router = new VueRouter({

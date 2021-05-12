@@ -81,7 +81,7 @@ export default {
             },
             {
               title: "测试集数据",
-              name: "testManagement",
+              name: "testDatabase",
               href: "/database/testDatabase",
             },
             {
