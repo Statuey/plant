@@ -3,7 +3,7 @@
     <div class="navbar">
       <div class="logo">
         <router-link to="/">
-          <img src="./assets/img/logo1.svg" width="60" alt="" />
+          <img src="./assets/img/logo1.png" width="60" alt="" />
         </router-link>
       </div>
       <div class="spacer"></div>
@@ -75,14 +75,14 @@ export default {
           href: "/database",
           children: [
             {
-              title: "训练集数据",
-              name: "trainManagement",
-              href: "/database/trainManagement",
+              title: "数据集上传",
+              name: "uploadData",
+              href: "/database/uploadData",
             },
             {
-              title: "测试集数据",
-              name: "testDatabase",
-              href: "/database/testDatabase",
+              title: "数据集创建",
+              name: "setsDisplay",
+              href: "/database/setsDisplay",
             },
             {
               title: "病斑数据",
@@ -228,7 +228,6 @@ export default {
 .navbar .logo {
   display: inline;
   height: 40px;
-  padding-top: 12px;
   min-width: 80px;
   float: left;
 }

@@ -39,6 +39,14 @@
         </v-btn>
       </div>
     </div>
+    <div class="classify">
+      <v-chip class="ma-2" v-if="chip1" close @click:close="chip1 = false"
+        >tomato</v-chip
+      >
+      <v-chip>sunny</v-chip>
+      <v-chip>Beijing</v-chip>
+      <v-chip>morning</v-chip>
+    </div>
   </div>
 </template>
 
@@ -52,6 +60,7 @@ export default {
       type: "",
       imageUrl: "",
       imageType: "train",
+      chip1: true,
       dropzoneOptions: {
         url: "/api/image/upload",
         thumbnailWidth: 150,
@@ -112,6 +121,9 @@ export default {
   border-radius: 1ch;
   box-shadow: 0 0 4px #616161 inset;
   cursor: pointer;
+}
+.ma-2 {
+  background-color: #41b883;
 }
 .confirm {
   display: inline;

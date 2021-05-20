@@ -1,15 +1,13 @@
 <template>
-  <div> 
-      <h1>lessions</h1>
+  <div>
+    hi
+    
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

@@ -5,9 +5,10 @@ import home from '../views/home.vue'
 import download from '../views/download.vue'
 import login from '../views/login.vue'
 import register from '../views/register.vue'
-import testDatabase from '../views/testDatabase.vue'
+import setsDisplay from '../views/setsDisplay.vue'
+import uploadData from '../views/uploadData.vue'
 import index from '../views/index.vue'
-import trainManagement from '../views/trainManagement.vue'
+import dataSets from '../views/dataSets.vue'
 import testManagement from '../views/testManagement.vue'
 import lesionsManagement from '../views/lesionsManagement.vue'
 import testEnhance from '../views/testEnhance.vue'
@@ -31,20 +32,25 @@ const routes = [{
     component: index
   },
   {
-    path: '/database/trainManagement',
-    name: 'trainManagement',
+    path: '/database/uploadData',
+    name: 'uploadData',
     meta: {
       requireAuth: true
     },
-    component: trainManagement,
+    component: uploadData,
   },
   {
-    path: '/database/testDatabase',
-    name: 'testDatabase',
+    path: '/database/setsDisplay',
+    name: 'setsDisplay',
     meta: {
       requireAuth: true
     },
-    component: testDatabase,
+    component: setsDisplay,
+  },
+  {
+    path: '/database/dataSets',
+    name: 'dataSets',
+    component: dataSets,
   },
   {
     path: '/database/lesionsManagement',
