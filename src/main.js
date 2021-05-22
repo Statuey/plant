@@ -19,11 +19,14 @@ const app = createApp(App);
 const api = axios.create({
   transformResponse: [
     ...axios.defaults.transformResponse,
-    (data) => humps.camelizeKeys(data),
+    (data) =>
+      humps.camelizeKeys(data, (key, convert, options) => {
+        return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
+      }),
   ],
   transformRequest: [
     (data) =>
-      humps.decamelizeKeys(data, function (key, convert, options) {
+      humps.decamelizeKeys(data, (key, convert, options) => {
         return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
       }),
     ...axios.defaults.transformRequest,
