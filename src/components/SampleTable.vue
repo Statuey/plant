@@ -1,5 +1,18 @@
 <template>
-  <div class="box">
+  <div class="mb-4">
+    <div class="field has-addons">
+      <div class="control"><a class="button is-static">视图</a></div>
+      <div class="control">
+        <div class="select">
+          <select v-model="mode">
+            <option value="table">表格</option>
+            <option value="icon">预览</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="mode === 'table'" class="box">
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -56,10 +69,28 @@
       </tbody>
     </table>
   </div>
+  <div v-if="mode === 'icon'" class="box icon-view">
+    <FileIcon
+      v-for="sample in samples"
+      :key="sample.id"
+      :filename="sample.originalFilename"
+      :url="`/api/files/${sample.file}`"
+      :mimetype="sample.mimetype"
+    />
+    <div class="dummy-file"></div>
+    <div class="dummy-file"></div>
+    <div class="dummy-file"></div>
+    <div class="dummy-file"></div>
+    <div class="dummy-file"></div>
+    <div class="dummy-file"></div>
+  </div>
 </template>
 
 <script>
+import FileIcon from "./FileIcon.vue";
+
 export default {
+  components: { FileIcon },
   props: ["dataset"],
   mounted() {
     const self = this;
@@ -68,7 +99,7 @@ export default {
     });
   },
   data() {
-    return { samples: [] };
+    return { samples: [], mode: "table" };
   },
   methods: {
     isImage(mimetype) {
@@ -85,5 +116,14 @@ export default {
 }
 .filename {
   cursor: default;
+}
+.icon-view {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.dummy-file {
+  width: 128px;
+  height: 0;
 }
 </style>
