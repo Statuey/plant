@@ -1,30 +1,43 @@
 <template>
   <div class="container">
-    <hr />
-    <div class="block" v-for="dataset in datasets" :key="dataset.id">
-      <h1 class="title is-4">
-        <span class="name">
-          {{ dataset.name }}
-        </span>
-        <router-link
-          class="button is-success is-small"
-          :to="`/datasets/${dataset.id}`"
-          >查看</router-link
-        >
-      </h1>
-      <p class="description">{{ dataset.description }}</p>
-      <p>{{ dateFormat(dataset.date) }}</p>
+    <div class="left">
+      <div>
+        <div v-html="avatarUrl" class="avatar"></div>
+      </div>
+      <div class="mt-4">
+        <p class="is-size-4 has-text-weight-bold">{{ user }}</p>
+      </div>
+    </div>
+    <div class="right">
+      <h6 class="title is-6">我创建的数据集</h6>
       <hr />
+      <div class="block" v-for="dataset in datasets" :key="dataset.id">
+        <h1 class="title is-4">
+          <span class="name">
+            {{ dataset.name }}
+          </span>
+          <router-link
+            class="button is-success is-small"
+            :to="`/datasets/${dataset.id}`"
+            >查看</router-link
+          >
+        </h1>
+        <p class="description">{{ dataset.description }}</p>
+        <p class="has-text-grey-light">{{ dateFormat(dataset.date) }}</p>
+        <hr />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
+import * as jdenticon from "jdenticon";
 
 export default {
   mounted() {
     const user = localStorage.getItem("user");
+    this.user = user;
     this.$http.get("/api/datasets", { params: { user } }).then((res) => {
       this.datasets = res.data.results;
     });
@@ -32,6 +45,7 @@ export default {
   data() {
     return {
       datasets: [],
+      user: undefined,
     };
   },
   methods: {
@@ -39,21 +53,52 @@ export default {
       return dayjs(date).fromNow();
     },
   },
+  computed: {
+    avatarUrl() {
+      if (this.user) {
+        return jdenticon.toSvg(this.user, 200);
+      }
+      return "";
+    },
+  },
 };
 </script>
 
 <style scoped>
+.container {
+  padding-top: 3rem;
+  display: flex;
+}
+
+.avatar {
+  border-radius: 8px;
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border: 1px solid #dbdbdb;
+}
+
+.left {
+  width: 300px;
+}
+
+.right {
+  flex: 1;
+}
+
 .name {
   flex: 1;
 }
 
 .title {
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
 }
 
 .description {
   margin-bottom: 0.6rem;
+  padding-right: 65px;
 }
 </style>

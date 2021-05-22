@@ -40,12 +40,12 @@ export default {
           password: this.password,
         })
         .then((res) => {
-          console.log(res.data);
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("user", self.username);
           self.$http.defaults.headers.common = {
             Authorization: `Bearer ${res.data.accessToken}`,
           };
+          this.$store.commit("login", self.username);
           self.$router.push("/dashboard");
         })
         .catch((err) => {});

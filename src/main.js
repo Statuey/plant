@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createStore } from 'vuex';
 import App from './App.vue';
 import VueAxios from 'vue-axios';
 import router from './router';
@@ -21,7 +22,10 @@ const api = axios.create({
     (data) => humps.camelizeKeys(data),
   ],
   transformRequest: [
-    (data) => humps.decamelizeKeys(data),
+    (data) =>
+      humps.decamelizeKeys(data, function (key, convert, options) {
+        return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
+      }),
     ...axios.defaults.transformRequest,
   ],
 });
@@ -34,7 +38,24 @@ if (accessTokenHistory) {
   };
 }
 
+const store = createStore({
+  state() {
+    return {
+      user: localStorage.getItem('user'),
+    };
+  },
+  mutations: {
+    login(state, user) {
+      state.user = user;
+    },
+    logout(state) {
+      state.user = undefined;
+    },
+  },
+});
+
 app.use(router);
+app.use(store);
 app.use(VueAxios, api);
 
 app.mount('#app');

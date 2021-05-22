@@ -32,16 +32,16 @@
 
 <script>
 export default {
-  data() {
-    return {
-      user: localStorage.getItem("user"),
-    };
-  },
   methods: {
     logout() {
-      this.user = undefined;
       localStorage.clear();
+      this.$store.commit("logout");
       this.$router.push("/");
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
     },
   },
 };
