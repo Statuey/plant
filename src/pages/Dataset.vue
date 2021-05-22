@@ -132,11 +132,13 @@ export default {
         .then((res) => {
           const self = this;
           const filename = res.data.filename;
+          const mimetype = res.data.mimetype;
           this.$http
             .post(`/api/datasets/${this.datasetId}/samples`, {
               file: filename,
               labels: self.sampleCreate.labels,
               originalFilename: self.sampleCreate.file.name,
+              mimetype: mimetype,
             })
             .then(() => {
               self.sampleCreateModalOpen = false;

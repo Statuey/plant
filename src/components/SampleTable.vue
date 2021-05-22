@@ -20,7 +20,27 @@
       </thead>
       <tbody>
         <tr v-for="sample in samples" :key="sample.id">
-          <td>{{ sample.originalFilename }}</td>
+          <td>
+            <div v-if="isImage(sample.mimetype)" class="dropdown is-hoverable">
+              <div class="dropdown-trigger filename">
+                {{ sample.originalFilename }}
+              </div>
+              <div class="dropdown-menu preview">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <img
+                      class="image"
+                      :src="`/api/files/${sample.file}`"
+                      alt="preview"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="filename">
+              {{ sample.originalFilename }}
+            </div>
+          </td>
           <td v-for="label in dataset.labels" :key="label.labelId">
             {{ sample.labels[label.labelId] }}
           </td>
@@ -50,5 +70,20 @@ export default {
   data() {
     return { samples: [] };
   },
+  methods: {
+    isImage(mimetype) {
+      const [type] = mimetype.split("/");
+      return type === "image";
+    },
+  },
 };
 </script>
+
+<style scoped>
+.preview {
+  max-width: 200px;
+}
+.filename {
+  cursor: default;
+}
+</style>
