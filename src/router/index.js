@@ -6,6 +6,7 @@ import Signup from '../pages/Signup.vue';
 import Dashboard from '../pages/Dashboard.vue';
 import New from '../pages/New.vue';
 import Dataset from '../pages/Dataset.vue';
+import Identify from '../pages/Identify.vue';
 
 const routes = [
   {
@@ -32,6 +33,10 @@ const routes = [
     path: '/datasets/:datasetId',
     component: Dataset,
   },
+  {
+    path: '/identify',
+    component: Identify,
+  }
 ];
 
 const router = createRouter({

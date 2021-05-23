@@ -32,6 +32,12 @@
       >
         创建
       </button>
+      <router-link
+        to="/dashboard"
+        class="signup-btn button is-primary is-fullwidth"
+      >
+        返回
+      </router-link>
     </div>
   </div>
 </template>
@@ -49,6 +55,7 @@ export default {
       description: "",
       labels: [],
       lastLabelId: 1,
+      flag: true,
     };
   },
   methods: {
@@ -68,6 +75,7 @@ export default {
         .post("/api/datasets", dataset)
         .then((res) => {
           console.log(res.data);
+          this.$router.push("/datasets/"+res.data.id);
         })
         .catch((err) => {
           console.log(err.response.data);

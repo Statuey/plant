@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="sample in samples" :key="sample.id">
+        <tr v-for="(sample,index) in samples" :key="sample.id">
           <td>
             <div v-if="isImage(sample.mimetype)" class="dropdown is-hoverable">
               <div class="dropdown-trigger filename">
@@ -58,8 +58,10 @@
             {{ sample.labels[label.labelId] }}
           </td>
           <td>
-            <a :href="`/api/files/${sample.file}`" download>下载</a>
+            <a :href="`/api/files/${sample.file}`" download class="item">下载</a>
+            <span @click="delSample(sample.id,index)" class="item">删除</span>
           </td>
+
         </tr>
         <tr v-if="samples.length === 0">
           <td>
@@ -106,6 +108,13 @@ export default {
       const [type] = mimetype.split("/");
       return type === "image";
     },
+    delSample(sampleId,index){
+      console.log("样本删除成功");
+      this.$http.delete(`/api/datasets/${this.dataset.id}/samples/${sampleId}`)
+      .then(()=>{
+        this.samples.splice(index,1);
+      })
+    }
   },
 };
 </script>
@@ -125,5 +134,11 @@ export default {
 .dummy-file {
   width: 128px;
   height: 0;
+}
+
+.item{
+  margin-right: 20px;
+  cursor: pointer;
+  color: #3273dc;
 }
 </style>

@@ -9,6 +9,9 @@
           <a class="navbar-link">{{ user }}</a>
 
           <div class="navbar-dropdown is-boxed is-right">
+            <router-link to="/identify" class="navbar-item"
+              >植物识别</router-link
+            >
             <router-link to="/dashboard" class="navbar-item"
               >我的数据集</router-link
             >
