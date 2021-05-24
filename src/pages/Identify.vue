@@ -22,25 +22,51 @@
         />
       </div>
 
-      <div>
-        <div class="columns">
-          <div class="column is-half">
-            <div class="imagePanel">
-              <div class="uploadImg">
-                <img :src="imageUrl" width="320" v-if="imageUrl" />
+      <div class="card">
+        <footer class="card-footer">
+          <p class="card-footer-item">
+            <span> 识别图像 </span>
+          </p>
+          <p class="card-footer-item">
+            <span> 病斑识别结果 </span>
+          </p>
+        </footer>
+        <div class="card-content">
+          <div class="columns">
+            <div class="column is-half">
+              <div class="imagePanel">
+                <div class="uploadImg">
+                  <img :src="imageUrl" v-if="imageUrl" />
+                </div>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="imagePanel">
+                <div class="displayImg">
+                  <img :src="images[result]" alt="" v-if="result">
+                </div>
+                <div class="showup" v-if="detective">
+                  <h3>识别结果为：</h3>
+                  <span class="tag is-success is-large">{{ result }}</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="column is-half">
-            <div class="showup" v-if="detective">
-              <h3>识别结果为：</h3>
-              <span class="tag is-success is-large">{{ result }}</span>
-            </div>
-          </div>
         </div>
+      </div>
+
+      <div>
         <footer class="modal-card-foot">
           <div class="btn">
-            <button class="button is-success" @click="identify">
+            <div class="select is-success">
+              <select>
+                <option>模型选择</option>
+                <option>模型1</option>
+                <option>模型2</option>
+                <option>模型3</option>
+              </select>
+            </div>
+            <button class="button" @click="identify">
               开始识别
             </button>
             <button class="button" @click="cancel">取消</button>
@@ -52,6 +78,17 @@
 </template>
 
 <script>
+import img0 from "../../assets/img/0.jpg" 
+import img1 from "../../assets/img/1.jpg" 
+import img2 from "../../assets/img/2.jpg" 
+import img3 from "../../assets/img/3.jpg" 
+import img4 from "../../assets/img/4.jpg" 
+import img5 from "../../assets/img/5.jpg" 
+import img6 from "../../assets/img/6.jpg" 
+import img7 from "../../assets/img/7.jpg" 
+import img8 from "../../assets/img/8.jpg" 
+import img9 from "../../assets/img/9.jpg" 
+
 export default {
   data() {
     return {
@@ -60,6 +97,9 @@ export default {
       state: false,
       detective: false,
       result: "",
+      images:[
+        img0,img1,img2,img3,img4,img5,img6,img7,img8,img9
+      ]
     };
   },
   methods: {
@@ -109,7 +149,9 @@ export default {
 <style scoped>
 .showup {
   margin: 20px;
+  margin-right: 10rem;
   display: block;
+  text-align: right;
 }
 .upload {
   height: 80px;
@@ -128,14 +170,33 @@ export default {
   border: solid;
   border-width: 1px;
   border-color: #f4f5f6;
-  height: 240px;
-  width: 320px;
+  height: 250px;
+  width: 250px;
   margin: 20px auto;
   display: block;
   background-color: #f1f1f1;
 }
-.btn{
+
+.displayImg{
+  border: solid;
+  border-width: 1px;
+  border-color: #f4f5f6;
+  height: 250px;
+  width: 250px;
+  margin: 20px auto;
+  display: block;
+  background-color: #f1f1f1;
+}
+.btn {
   margin: 10px auto;
+}
+
+.select {
+  margin: 0px 30px;
+}
+
+.button {
+  margin: 0px 30px;
 }
 #choose {
   display: none;
