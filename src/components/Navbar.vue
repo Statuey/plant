@@ -1,7 +1,11 @@
 <template>
   <nav class="navbar">
     <div class="navbar-brand">
-      <span class="navbar-item is-size-4 has-text-weight-bold">PlantData</span>
+      <router-link to="/">
+        <span class="navbar-item is-size-4 has-text-weight-bold"
+          >PlantData</span
+        >
+      </router-link>
     </div>
     <div class="navbar-menu">
       <div class="navbar-end">

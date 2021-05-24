@@ -24,24 +24,50 @@ const routes = [
   {
     path: '/dashboard',
     component: Dashboard,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/new',
     component: New,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/datasets/:datasetId',
     component: Dataset,
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/identify',
     component: Identify,
+    meta: {
+      requireAuth: true
+    }
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    //need to login
+    const token = localStorage.getItem("accessToken")
+    if (token) {
+      next()
+    } else {
+      next("/")
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

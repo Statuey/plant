@@ -3,49 +3,63 @@
     <div>
       <section class="hero is-primary">
         <div class="hero-body">
-          <p class="title">植物识别</p>
-          <p class="subtitle">上传图片识别图片</p>
+          <p class="title">病害识别</p>
+          <p class="subtitle">上传图片识别植物病害</p>
         </div>
       </section>
     </div>
     <div class="container">
-      <div class="file has-name is-fullwidth mb-3">
-        <label class="file-label">
+      <div class="upload">
+        <label for="choose">
+          <span id="label">add an image</span>
+        </label>
         <input
-          class="file-input"
+          id="choose"
           type="file"
           ref="fileInput"
           accept="image/*"
           @change="getImage"
         />
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="bi bi-upload"></i>
-          </span>
-          <span class="file-label">选择文件</span>
-        </span>
-        </label>
       </div>
 
-      <div class="imagePanel">
-        <img :src="imageUrl" width="300" />
+      <div>
+        <div class="columns">
+          <div class="column is-half">
+            <div class="imagePanel">
+              <div class="uploadImg">
+                <img :src="imageUrl" width="320" v-if="imageUrl" />
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="showup" v-if="detective">
+              <h3>识别结果为：</h3>
+              <span class="tag is-success is-large">{{ result }}</span>
+            </div>
+          </div>
+        </div>
+        <footer class="modal-card-foot">
+          <div class="btn">
+            <button class="button is-success" @click="identify">
+              开始识别
+            </button>
+            <button class="button" @click="cancel">取消</button>
+          </div>
+        </footer>
       </div>
-      <footer class="modal-card-foot">
-        <button class="button is-success" @click="identify">确认上传</button>
-        <button class="button">取消上传</button>
-      </footer>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
       imageUrl: "",
       imageType: "train",
       state: false,
+      detective: false,
+      result: "",
     };
   },
   methods: {
@@ -73,19 +87,65 @@ export default {
       let config = {
         headers: { "Content-Type": "multipart/form-data" },
       }; //添加请求头
-      axios
-        .post("/api/image/upload", param, config)
+      this.$http
+        .post("/api/upload_test_img", param, config)
         .then((res) => {
-          console.log(res.data.url);
-          this.state = true;
+          console.log(res.data);
+          this.result = res.data.result;
+          this.detective = true;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
+    },
+    cancel() {
+      this.imageUrl = "";
+      this.detective = false;
     },
   },
 };
 </script>
 
 <style scoped>
+.showup {
+  margin: 20px;
+  display: block;
+}
+.upload {
+  height: 80px;
+  width: 70%;
+  border: solid;
+  border-width: 1px;
+  border-color: #f4f5f6;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 1ch;
+  box-shadow: 0 0 4px #616161 inset;
+  cursor: pointer;
+}
+
+.uploadImg {
+  border: solid;
+  border-width: 1px;
+  border-color: #f4f5f6;
+  height: 240px;
+  width: 320px;
+  margin: 20px auto;
+  display: block;
+  background-color: #f1f1f1;
+}
+.btn{
+  margin: 10px auto;
+}
+#choose {
+  display: none;
+}
+#label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #9b9b9b;
+  margin-top: 25px;
+  text-align: center;
+}
 </style>

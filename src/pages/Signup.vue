@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form">
-      <h1 class="title is-2 has-text-centered">注册账号</h1>
+      <h1 class="title is-2 has-text-centered">注册</h1>
       <div class="field">
         <label class="label">用户名</label>
         <div class="control">
@@ -26,6 +26,12 @@
       <button class="signup-btn button is-primary is-fullwidth" @click="signup">
         注册
       </button>
+      <div class="warn">
+        <div class="notification is-warning" v-if="tips">
+          <button class="delete" @click="close"></button>
+          <strong>该用户名已存在或不符合要求，请重试！ </strong>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +43,7 @@ export default {
       username: "",
       password: "",
       repeatPassword: "",
+      tips: false,
     };
   },
   methods: {
@@ -50,7 +57,13 @@ export default {
         .then((res) => {
           this.$router.push("/login");
         })
-        .catch((err) => {});
+        .catch((err) => {
+          this.tips = true;
+          console.log("error");
+        });
+    },
+    close() {
+      this.tips = false;
     },
   },
 };
@@ -63,5 +76,8 @@ export default {
 .form {
   max-width: 500px;
   margin: 2rem auto 0 auto;
+}
+.warn{
+  margin-top: 10px;
 }
 </style>

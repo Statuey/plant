@@ -40,7 +40,7 @@ export default {
 }
 .icon-box {
   width: 128px;
-  height: 128px;
+  height: 128px;  
   display: flex;
   justify-content: center;
   align-items: center;

@@ -75,7 +75,7 @@ export default {
         .post("/api/datasets", dataset)
         .then((res) => {
           console.log(res.data);
-          this.$router.push("/datasets/"+res.data.id);
+          this.$router.push("/datasets/" + res.data.id);
         })
         .catch((err) => {
           console.log(err.response.data);

@@ -19,6 +19,12 @@
       <button class="signup-btn button is-primary is-fullwidth" @click="login">
         登录
       </button>
+      <div class="warn">
+        <div class="notification is-warning" v-if="tips">
+          <button class="delete" @click="close"></button>
+          <strong>登录失败，请重试 </strong>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +35,7 @@ export default {
     return {
       username: "",
       password: "",
+      tips: false,
     };
   },
   methods: {
@@ -48,7 +55,13 @@ export default {
           this.$store.commit("login", self.username);
           self.$router.push("/dashboard");
         })
-        .catch((err) => {});
+        .catch((err) => {
+          this.tips = true;
+          console.log("error");
+        });
+    },
+    close() {
+      this.tips = false;
     },
   },
 };
@@ -62,5 +75,8 @@ export default {
 .form {
   max-width: 500px;
   margin: 2rem auto 0 auto;
+}
+.warn {
+  margin-top: 10px;
 }
 </style>

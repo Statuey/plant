@@ -1,5 +1,9 @@
-import { createApp } from 'vue';
-import { createStore } from 'vuex';
+import {
+  createApp
+} from 'vue';
+import {
+  createStore
+} from 'vuex';
 import App from './App.vue';
 import VueAxios from 'vue-axios';
 import router from './router';
@@ -20,15 +24,19 @@ const api = axios.create({
   transformResponse: [
     ...axios.defaults.transformResponse,
     (data) =>
-      humps.camelizeKeys(data, (key, convert, options) => {
-        return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
-      }),
+    humps.camelizeKeys(data, (key, convert, options) => {
+      return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
+    }),
   ],
   transformRequest: [
-    (data) =>
-      humps.decamelizeKeys(data, (key, convert, options) => {
+    (data) => {
+      if (data instanceof FormData) {
+        return data;
+      }
+      return humps.decamelizeKeys(data, (key, convert, options) => {
         return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
-      }),
+      });
+    },
     ...axios.defaults.transformRequest,
   ],
 });
