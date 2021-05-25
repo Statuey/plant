@@ -20,6 +20,7 @@
               >我的数据集</router-link
             >
             <router-link to="/new" class="navbar-item">创建数据集</router-link>
+            <router-link to="/datasets/admin" class="navbar-item">管理员审核</router-link>
             <hr class="navbar-divider" />
             <a class="navbar-item" @click="logout">退出登录</a>
           </div>

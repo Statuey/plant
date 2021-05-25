@@ -7,6 +7,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import New from '../pages/New.vue';
 import Dataset from '../pages/Dataset.vue';
 import Identify from '../pages/Identify.vue';
+import Admin from '../pages/Admin.vue';
 
 const routes = [
   {
@@ -45,6 +46,13 @@ const routes = [
   {
     path: '/identify',
     component: Identify,
+    meta: {
+      requireAuth: true
+    }
+  },
+  {
+    path: '/datasets/admin',
+    component: Admin,
     meta: {
       requireAuth: true
     }
