@@ -9,9 +9,12 @@
       </div>
     </div>
     <div class="right">
-      <h6 class="title is-6">我创建的数据集</h6>
+      <div>
+        <h6 class="title is-6 head">我创建的数据集</h6>
+        <router-link to="/new"> <i class="bi bi-cloud-plus"></i></router-link>
+      </div>
       <hr />
-      <div class="block" v-for="dataset in datasets" :key="dataset.id">
+      <div class="block" v-for="(dataset, index) in datasets" :key="dataset.id">
         <h1 class="title is-4">
           <span class="name">
             {{ dataset.name }}
@@ -21,6 +24,12 @@
             :to="`/datasets/${dataset.id}`"
             >查看</router-link
           >
+          <button
+            class="button is-success is-small"
+            @click="delSet(dataset.id, index)"
+          >
+            删除
+          </button>
         </h1>
         <p class="description">{{ dataset.description }}</p>
         <p class="has-text-grey-light">{{ dateFormat(dataset.date) }}</p>
@@ -51,6 +60,11 @@ export default {
   methods: {
     dateFormat(date) {
       return dayjs(date).fromNow();
+    },
+    delSet(setId, index) {
+      this.$http.delete(`/api/datasets/${setId}/del_datasets`).then(() => {
+        this.datasets.splice(index, 1);
+      });
     },
   },
   computed: {
@@ -96,9 +110,21 @@ export default {
   display: flex;
   align-items: center;
 }
+.head{
+  display: inline-block;
+}
 
 .description {
   margin-bottom: 0.6rem;
   padding-right: 65px;
+}
+
+.button {
+  margin-left: 10px;
+}
+
+.bi {
+  float: right;   
+  font-size: 1.5em;
 }
 </style>

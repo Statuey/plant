@@ -4,10 +4,11 @@
       <span class="is-flex-grow-1">
         {{ dataset.name }}
       </span>
-
       <button class="button is-primary" @click="sampleCreateModalOpen = true">
         上传样本
       </button>
+      <router-link to="/dashboard"><i class="bi bi-arrow-return-right"></i></router-link>
+
     </div>
     <hr />
     <SampleTable v-if="dataset.id" :dataset="dataset" />
@@ -155,5 +156,8 @@ export default {
 .header {
   display: flex;
   align-items: center;
+}
+.bi{
+  margin-left: 10px;
 }
 </style>

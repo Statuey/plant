@@ -10,6 +10,8 @@
           </select>
         </div>
       </div>
+       <i class="bi bi-arrow-counterclockwise refresh" @click="reload"></i>
+      
     </div>
   </div>
   <div v-if="mode === 'table'" class="box">
@@ -32,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(sample,index) in samples" :key="sample.id">
+        <tr v-for="(sample, index) in samples" :key="sample.id">
           <td>
             <div v-if="isImage(sample.mimetype)" class="dropdown is-hoverable">
               <div class="dropdown-trigger filename">
@@ -58,10 +60,11 @@
             {{ sample.labels[label.labelId] }}
           </td>
           <td>
-            <a :href="`/api/files/${sample.file}`" download class="item">下载</a>
-            <span @click="delSample(sample.id,index)" class="item">删除</span>
+            <a :href="`/api/files/${sample.file}`" download class="item"
+              >下载</a
+            >
+            <span @click="delSample(sample.id, index)" class="item">删除</span>
           </td>
-
         </tr>
         <tr v-if="samples.length === 0">
           <td>
@@ -108,12 +111,16 @@ export default {
       const [type] = mimetype.split("/");
       return type === "image";
     },
-    delSample(sampleId,index){
+    delSample(sampleId, index) {
       console.log("样本删除成功");
-      this.$http.delete(`/api/datasets/${this.dataset.id}/samples/${sampleId}`)
-      .then(()=>{
-        this.samples.splice(index,1);
-      })
+      this.$http
+        .delete(`/api/datasets/${this.dataset.id}/samples/${sampleId}`)
+        .then(() => {
+          this.samples.splice(index, 1);
+        });
+    },
+    reload(){
+      location.reload();
     }
   },
 };
@@ -136,9 +143,17 @@ export default {
   height: 0;
 }
 
-.item{
+.item {
   margin-right: 20px;
   cursor: pointer;
   color: #3273dc;
 }
+
+.refresh {
+  font-size: 1.5em;
+  margin-top: 2px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
 </style>

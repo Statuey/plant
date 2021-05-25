@@ -141,6 +141,7 @@ export default {
     cancel() {
       this.imageUrl = "";
       this.detective = false;
+      this.result="";
     },
   },
 };
