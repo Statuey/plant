@@ -1,14 +1,22 @@
 <template>
   <div class="container">
-    <div class="header title is-4 mt-4">
-      <span class="is-flex-grow-1">
-        {{ dataset.name }}
+    <div class="header mt-4">
+      <span class="is-flex-grow-1 title is-4 mb-0">
+        {{ dataset.creator.username }}/{{ dataset.name }}
       </span>
-      <button class="button is-primary" @click="sampleCreateModalOpen = true">
-        上传样本
-      </button>
-      <router-link to="/dashboard"><i class="bi bi-arrow-return-right"></i></router-link>
-
+      <div class="buttons">
+        <router-link to="/dashboard" class="button">我的数据集</router-link>
+        <router-link
+          v-if="dataset.id && isManager"
+          :to="`/datasets/${dataset.id}/unchecked`"
+          class="button"
+        >
+          样本审核</router-link
+        >
+        <button class="button is-primary" @click="sampleCreateModalOpen = true">
+          上传样本
+        </button>
+      </div>
     </div>
     <hr />
     <SampleTable v-if="dataset.id" :dataset="dataset" />
@@ -102,6 +110,9 @@ export default {
       dataset: {
         name: "",
         labels: [],
+        creator: {
+          username: "",
+        },
       },
       sampleCreateModalOpen: false,
       sampleCreate: {
@@ -110,6 +121,16 @@ export default {
       },
       datasetId: "",
     };
+  },
+  computed: {
+    isManager() {
+      if (!this.dataset.id) return false;
+      const user = this.$store.state.user;
+      return (
+        user.username === this.dataset.creator.username ||
+        this.dataset.managers.includes(user.id)
+      );
+    },
   },
   methods: {
     fileChange(e) {
@@ -157,7 +178,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.bi{
+.bi {
   margin-left: 10px;
 }
 </style>

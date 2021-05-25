@@ -1,213 +1,193 @@
 <template>
   <div>
-    <div>
-      <section class="hero is-primary">
-        <div class="hero-body">
-          <p class="title">病害识别</p>
-          <p class="subtitle">上传图片识别植物病害</p>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <p class="title">病害识别</p>
+        <p class="subtitle">上传图片识别植物病害</p>
+      </div>
+    </section>
+  </div>
+  <div class="container mt-4">
+    <div class="field has-addons">
+      <div class="control">
+        <a class="button is-static">选择模型</a>
+      </div>
+      <div class="control">
+        <div class="select">
+          <select>
+            <option>69.pth</option>
+            <option>模型1</option>
+            <option>模型2</option>
+            <option>模型3</option>
+          </select>
         </div>
-      </section>
+      </div>
+      <div class="control">
+        <button class="button" @click="cancel">重置</button>
+      </div>
+      <div v-if="file" class="control">
+        <button class="button is-primary" @click="identify">开始识别</button>
+      </div>
     </div>
-    <div class="container">
-      <div class="upload">
-        <label for="choose">
-          <span id="label">add an image</span>
-        </label>
-        <input
-          id="choose"
-          type="file"
-          ref="fileInput"
-          accept="image/*"
-          @change="getImage"
-        />
-      </div>
-
-      <div class="card">
-        <footer class="card-footer">
-          <p class="card-footer-item">
-            <span> 识别图像 </span>
-          </p>
-          <p class="card-footer-item">
-            <span> 病斑识别结果 </span>
-          </p>
-        </footer>
-        <div class="card-content">
-          <div class="columns">
-            <div class="column is-half">
-              <div class="imagePanel">
-                <div class="uploadImg">
-                  <img :src="imageUrl" v-if="imageUrl" />
+    <div class="box">
+      <div class="columns">
+        <div class="column is-half">
+          <div class="upload">
+            <div v-if="file" class="image-wrapper">
+              <img v-if="fileURL" :src="fileURL" class="box image" />
+              <div v-else>
+                <div class="file-icon box">
+                  <span class="is-size-4 has-text-grey">File</span>
                 </div>
+                <input
+                  class="filename"
+                  type="text"
+                  :value="file.name"
+                  readonly
+                />
               </div>
             </div>
-            <div class="column is-half">
-              <div class="imagePanel">
-                <div class="displayImg">
-                  <img :src="images[result]" alt="" v-if="result">
-                </div>
-                <div class="showup" v-if="detective">
-                  <h3>识别结果为：</h3>
-                  <span class="tag is-success is-large">{{ result }}</span>
-                </div>
-              </div>
+            <div v-else class="button-wrapper">
+              <input
+                type="file"
+                id="file"
+                hidden
+                @change="fileChange"
+                accept="image/png, image/jpeg"
+              />
+              <label for="file" class="button">点击上传测试样本</label>
             </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        <footer class="modal-card-foot">
-          <div class="btn">
-            <div class="select is-success">
-              <select>
-                <option>模型选择</option>
-                <option>模型1</option>
-                <option>模型2</option>
-                <option>模型3</option>
-              </select>
-            </div>
-            <button class="button" @click="identify">
-              开始识别
-            </button>
-            <button class="button" @click="cancel">取消</button>
-          </div>
-        </footer>
+        <div class="column is-half">
+          <table
+            class="result table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+            v-if="result"
+          >
+            <thead>
+              <tr>
+                <th>标签号</th>
+                <th>标签</th>
+                <th>可能性</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in result" :key="row[0]">
+                <td class="is-family-monospace">{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td class="is-family-monospace">{{ row[2] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import img0 from "../../assets/img/0.jpg" 
-import img1 from "../../assets/img/1.jpg" 
-import img2 from "../../assets/img/2.jpg" 
-import img3 from "../../assets/img/3.jpg" 
-import img4 from "../../assets/img/4.jpg" 
-import img5 from "../../assets/img/5.jpg" 
-import img6 from "../../assets/img/6.jpg" 
-import img7 from "../../assets/img/7.jpg" 
-import img8 from "../../assets/img/8.jpg" 
-import img9 from "../../assets/img/9.jpg" 
+import FileIcon from "../components/FileIcon.vue";
 
 export default {
+  components: { FileIcon },
   data() {
     return {
-      imageUrl: "",
-      imageType: "train",
-      state: false,
-      detective: false,
-      result: "",
-      images:[
-        img0,img1,img2,img3,img4,img5,img6,img7,img8,img9
-      ]
+      result: undefined,
+      file: undefined,
+      fileURL: "",
     };
   },
   methods: {
-    getImage(event) {
-      const self = this;
-      const files = event.target.files;
-      let filename = files[0].name;
-      if (filename.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid image!"); //判断图片是否有效
+    fileChange(e) {
+      if (e.target.files.length > 0) {
+        this.file = e.target.files[0];
+        if (this.isImage) {
+          this.fileURL = URL.createObjectURL(this.file);
+        } else {
+          this.fileURL = "";
+        }
+      } else {
+        this.sampleCreate.file = undefined;
       }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        self.imageUrl = fileReader.result;
-      });
-      fileReader.readAsDataURL(files[0]);
-      this.image = files[0];
-      fileReader.onload = function () {
-        self.imageUrl = this.result;
-      };
     },
-    identify(e) {
-      e.preventDefault();
-      let param = new FormData(); //创建form对象
-      param.append("file", this.image); //通过append向form对象添加数据
-      let config = {
+
+    identify() {
+      const formData = new FormData();
+      formData.append("file", this.file);
+      const config = {
         headers: { "Content-Type": "multipart/form-data" },
-      }; //添加请求头
+      };
       this.$http
-        .post("/api/upload_test_img", param, config)
+        .post("/api/upload_test_img", formData, config)
         .then((res) => {
-          console.log(res.data);
           this.result = res.data.result;
-          this.detective = true;
         })
         .catch((err) => {
           console.log(err);
         });
     },
     cancel() {
-      this.imageUrl = "";
-      this.detective = false;
-      this.result="";
+      this.file = undefined;
+      this.result = undefined;
+    },
+  },
+  computed: {
+    isImage() {
+      if (!file) return false;
+      const mimetype = this.file.type;
+      const [type] = mimetype.split("/");
+      return type === "image";
     },
   },
 };
 </script>
 
 <style scoped>
-.showup {
-  margin: 20px;
-  margin-right: 10rem;
-  display: block;
-  text-align: right;
-}
 .upload {
-  height: 80px;
-  width: 70%;
-  border: solid;
-  border-width: 1px;
-  border-color: #f4f5f6;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 1ch;
-  box-shadow: 0 0 4px #616161 inset;
-  cursor: pointer;
-}
-
-.uploadImg {
-  border: solid;
-  border-width: 1px;
-  border-color: #f4f5f6;
-  height: 250px;
-  width: 250px;
-  margin: 20px auto;
   display: block;
-  background-color: #f1f1f1;
+  width: 100%;
+  height: 300px;
+  align-items: center;
+  border: 2px dashed #dddddd;
+  border-radius: 5px;
+  padding: 1rem;
 }
 
-.displayImg{
-  border: solid;
-  border-width: 1px;
-  border-color: #f4f5f6;
-  height: 250px;
-  width: 250px;
-  margin: 20px auto;
+.result {
+  height: 300px;
   display: block;
-  background-color: #f1f1f1;
-}
-.btn {
-  margin: 10px auto;
+  overflow: auto;
 }
 
-.select {
-  margin: 0px 30px;
+.image-wrapper,
+.button-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.button {
-  margin: 0px 30px;
+.image {
+  padding: 10px;
+  max-width: 100%;
+  max-height: 100%;
 }
-#choose {
-  display: none;
+
+.file-icon {
+  width: 128px;
+  height: 180px;
+  margin: 0;
+  border-radius: 5px;
 }
-#label {
-  display: block;
-  font-size: 16px;
-  font-weight: bold;
-  color: #9b9b9b;
-  margin-top: 25px;
+.filename {
+  margin-top: 1rem;
+  width: 128px;
+  word-break: break-all;
+  padding: 0 5px;
+  outline: none;
+  border: none;
+  appearance: none;
   text-align: center;
 }
 </style>

@@ -10,8 +10,6 @@
           </select>
         </div>
       </div>
-       <i class="bi bi-arrow-counterclockwise refresh" @click="reload"></i>
-      
     </div>
   </div>
   <div v-if="mode === 'table'" class="box">
@@ -63,7 +61,15 @@
             <a :href="`/api/files/${sample.file}`" download class="item"
               >下载</a
             >
-            <span @click="delSample(sample.id, index)" class="item">删除</span>
+            <span @click="deleteSample(sample.id, index)" class="small-button"
+              >删除</span
+            >
+            <span
+              v-if="unchecked"
+              @click="check(sample.id, index)"
+              class="small-button"
+              >审核通过</span
+            >
           </td>
         </tr>
         <tr v-if="samples.length === 0">
@@ -75,6 +81,9 @@
     </table>
   </div>
   <div v-if="mode === 'icon'" class="box icon-view">
+    <span v-if="samples.length === 0" class="has-text-grey-light"
+      >暂时没有数据</span
+    >
     <FileIcon
       v-for="sample in samples"
       :key="sample.id"
@@ -96,11 +105,14 @@ import FileIcon from "./FileIcon.vue";
 
 export default {
   components: { FileIcon },
-  props: ["dataset"],
+  props: ["dataset", "unchecked"],
   mounted() {
-    const self = this;
-    this.$http.get(`/api/datasets/${this.dataset.id}/samples`).then((res) => {
-      self.samples = res.data.results;
+    let url = `/api/datasets/${this.dataset.id}/samples`;
+    if (this.unchecked) {
+      url = `/api/datasets/${this.dataset.id}/unchecked_samples`;
+    }
+    this.$http.get(url).then((res) => {
+      this.samples = res.data.results;
     });
   },
   data() {
@@ -111,17 +123,20 @@ export default {
       const [type] = mimetype.split("/");
       return type === "image";
     },
-    delSample(sampleId, index) {
-      console.log("样本删除成功");
+    deleteSample(sampleId, index) {
       this.$http
         .delete(`/api/datasets/${this.dataset.id}/samples/${sampleId}`)
         .then(() => {
           this.samples.splice(index, 1);
         });
     },
-    reload(){
-      location.reload();
-    }
+    check(sampleId, index) {
+      this.$http
+        .put(`/api/datasets/${this.dataset.id}/samples/${sampleId}/checked`)
+        .then(() => {
+          this.samples.splice(index, 1);
+        });
+    },
   },
 };
 </script>
@@ -142,18 +157,9 @@ export default {
   width: 128px;
   height: 0;
 }
-
-.item {
-  margin-right: 20px;
+.small-button {
+  margin-left: 1rem;
   cursor: pointer;
   color: #3273dc;
 }
-
-.refresh {
-  font-size: 1.5em;
-  margin-top: 2px;
-  margin-left: 20px;
-  cursor: pointer;
-}
-
 </style>

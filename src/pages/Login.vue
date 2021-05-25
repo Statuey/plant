@@ -16,13 +16,17 @@
         </div>
       </div>
 
-      <button class="signup-btn button is-primary is-fullwidth" @click="login">
+      <button
+        class="signup-btn button is-primary is-fullwidth"
+        @click="login"
+        :disabled="!username || !password"
+      >
         登录
       </button>
       <div class="warn">
         <div class="notification is-warning" v-if="tips">
           <button class="delete" @click="close"></button>
-          <strong>登录失败，请重试 </strong>
+          <strong>{{ tips }}</strong>
         </div>
       </div>
     </div>
@@ -35,7 +39,7 @@ export default {
     return {
       username: "",
       password: "",
-      tips: false,
+      tips: "",
     };
   },
   methods: {
@@ -49,19 +53,22 @@ export default {
         .then((res) => {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("user", self.username);
+          localStorage.setItem("userId", res.data.userId);
           self.$http.defaults.headers.common = {
             Authorization: `Bearer ${res.data.accessToken}`,
           };
-          this.$store.commit("login", self.username);
+          this.$store.commit("login", {
+            username: self.username,
+            id: res.data.userId,
+          });
           self.$router.push("/dashboard");
         })
         .catch((err) => {
-          this.tips = true;
-          console.log("error");
+          this.tips = err.response.data.description;
         });
     },
     close() {
-      this.tips = false;
+      this.tips = "";
     },
   },
 };

@@ -7,7 +7,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import New from '../pages/New.vue';
 import Dataset from '../pages/Dataset.vue';
 import Identify from '../pages/Identify.vue';
-import Admin from '../pages/Admin.vue';
+import Unchecked from '../pages/Unchecked.vue';
 
 const routes = [
   {
@@ -26,37 +26,31 @@ const routes = [
     path: '/dashboard',
     component: Dashboard,
     meta: {
-      requireAuth: true
-    }
+      requireAuth: true,
+    },
   },
   {
     path: '/new',
     component: New,
     meta: {
-      requireAuth: true
-    }
+      requireAuth: true,
+    },
   },
   {
     path: '/datasets/:datasetId',
     component: Dataset,
-    meta: {
-      requireAuth: true
-    }
   },
   {
     path: '/identify',
     component: Identify,
-    meta: {
-      requireAuth: true
-    }
   },
   {
-    path: '/datasets/admin',
-    component: Admin,
+    path: '/datasets/:datasetId/unchecked',
+    component: Unchecked,
     meta: {
-      requireAuth: true
-    }
-  }
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
@@ -66,12 +60,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    //need to login
-    const token = localStorage.getItem("accessToken")
+    const token = localStorage.getItem('accessToken');
     if (token) {
-      next()
+      next();
     } else {
-      next("/")
+      next('/');
     }
   } else {
     next();

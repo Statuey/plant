@@ -6,57 +6,32 @@
         <p class="subtitle">植物病害识别数据管理平台</p>
       </div>
     </section>
-    <div class="container">
-      <div class="header title is-4 mt-4">
-        <span class="is-flex-grow-1"> 当前所有数据集： </span>
-      </div>
-      <div class="block" v-for="dataset in datasets" :key="dataset._user">
-        <h1 class="title is-4">
-          <span class="username">
-            {{ dataset.creator.username }}
-          </span>
-          <i class="bi bi-person person"></i>
-          <router-link
-            class="button is-success is-small search"
-            :to="`/datasets/${dataset.id}`"
-            >查看</router-link
-          >
-        </h1>
-        <p class="name">{{ dataset.name }}</p>
-        <p class="sample">{{ dataset.description }}</p>
-        <p class="id">{{ dataset.id }}</p>
-        <hr />
+    <div class="container mt-4">
+      <div class="columns is-multiline">
+        <div class="column is-12-mobile is-3-fullhd is-4-desktop is-6-tablet" v-for="dataset in datasets" :key="dataset.id">
+          <DatasetCard :dataset="dataset" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import DatasetCard from "../components/DatasetCard.vue";
+
 export default {
-  props: ["dataset"],
+  components: { DatasetCard },
   data() {
     return {
-      samples: [],
       datasets: [],
-      user: undefined,
     };
   },
   mounted() {
     this.$http.get("/api/datasets").then((res) => {
       this.datasets = res.data.results;
-      console.log(this.datasets);
     });
   },
 };
 </script>
 
 <style scoped>
-.page {
-  background-size: contain;
-}
-.username{
-  flex:1;
-}
-.search{
-  float: right;
-}
 </style>

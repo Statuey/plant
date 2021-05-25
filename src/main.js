@@ -1,9 +1,5 @@
-import {
-  createApp
-} from 'vue';
-import {
-  createStore
-} from 'vuex';
+import { createApp } from 'vue';
+import { createStore } from 'vuex';
 import App from './App.vue';
 import VueAxios from 'vue-axios';
 import router from './router';
@@ -24,9 +20,9 @@ const api = axios.create({
   transformResponse: [
     ...axios.defaults.transformResponse,
     (data) =>
-    humps.camelizeKeys(data, (key, convert, options) => {
-      return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
-    }),
+      humps.camelizeKeys(data, (key, convert, options) => {
+        return /^[a-zA-Z0-9]{22}$/.test(key) ? key : convert(key, options);
+      }),
   ],
   transformRequest: [
     (data) => {
@@ -52,7 +48,10 @@ if (accessTokenHistory) {
 const store = createStore({
   state() {
     return {
-      user: localStorage.getItem('user'),
+      user: {
+        username: localStorage.getItem('user'),
+        id: localStorage.getItem('userId'),
+      },
     };
   },
   mutations: {
@@ -60,7 +59,10 @@ const store = createStore({
       state.user = user;
     },
     logout(state) {
-      state.user = undefined;
+      state.user = {
+        username: undefined,
+        id: undefined,
+      };
     },
   },
 });
