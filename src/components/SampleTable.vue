@@ -10,6 +10,15 @@
           </select>
         </div>
       </div>
+      <div>
+        <button
+          v-if="unchecked == true"
+          class="button is-success is-primary"
+          @click="showOperator = true"
+        >
+          添加协作者
+        </button>
+      </div>
     </div>
   </div>
   <div v-if="mode === 'table'" class="box">
@@ -28,7 +37,11 @@
               {{ label.description }}
             </p>
           </th>
-          <th></th>
+          <th>
+            <span @click="showEnum = true" class="small-button"
+              >添加枚举类型</span
+            >
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -98,13 +111,95 @@
     <div class="dummy-file"></div>
     <div class="dummy-file"></div>
   </div>
+
+  <div>
+    <div>
+      <h2>当前所有管理者</h2>
+    </div>
+    <div>
+      <th v-for="manager in dataset.managers" :key="manager">
+        {{ manager }}
+      </th>
+    </div>
+  </div>
+  <!-- 创建管理员弹窗 -->
+  <div class="modal" :class="{ 'is-active': showOperator }">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">添加审核协作者</p>
+        <button class="delete" @click="showOperator = false"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <span>用户名</span>
+          <div class="control">
+            <input class="input" type="text" v-model="username" />
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" @click="addOperator">确认</button>
+        <button class="button" @click="showOperator = false">取消</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- 添加枚举类型弹窗 -->
+  <div class="modal" :class="{ 'is-active': showEnum }">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">添加枚举类型</p>
+        <button class="delete" @click="showEnum = false"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <span>标签名称</span>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select v-model="label">
+                <option
+                  v-for="label in dataset.labels"
+                  :key="label.labelId"
+                  :value="label"
+                >
+                  {{ label.labelName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" v-if="label.type === 'enum'">
+          <span>添加枚举值</span>
+          <div class="control">
+            <div class="second-row">
+              <TagInput placeholder="添加枚举类型" v-model="tags" />
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="notification is-info is-light">
+            <button class="delete" @click="showEnum = false"></button>
+            请选择枚举类型标签
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" @click="addEnumtype">确认</button>
+        <button class="button" @click="showEnum = false">取消</button>
+      </footer>
+    </div>
+  </div>
 </template>
 
 <script>
 import FileIcon from "./FileIcon.vue";
+import TagInput from "./TagInput.vue";
 
 export default {
-  components: { FileIcon },
+  components: { FileIcon, TagInput },
   props: ["dataset", "unchecked"],
   mounted() {
     let url = `/api/datasets/${this.dataset.id}/samples`;
@@ -116,7 +211,15 @@ export default {
     });
   },
   data() {
-    return { samples: [], mode: "table" };
+    return {
+      samples: [],
+      mode: "table",
+      showOperator: false,
+      username: "",
+      showEnum: false,
+      label: "",
+      tags: [],
+    };
   },
   methods: {
     isImage(mimetype) {
@@ -136,6 +239,29 @@ export default {
         .then(() => {
           this.samples.splice(index, 1);
         });
+    },
+    addOperator() {
+      this.$http
+        .put(`/api/datasets/${this.dataset.id}/managers`, {
+          username: this.username,
+        })
+        .then((res) => {
+          console.log(res);
+          alert("添加成功");
+        })
+        .catch((err) => {
+          alert("该账户不存在!");
+        });
+    },
+    addEnumtype() {
+      this.$http
+      .post(`/api/datasets/${this.dataset.id}/labels/${this.label.labelId}`,{
+        values:this.tags
+      })
+      .then((res)=>{
+        console.log(res);
+        alert("添加成功")
+      })
     },
   },
 };
@@ -161,5 +287,8 @@ export default {
   margin-left: 1rem;
   cursor: pointer;
   color: #3273dc;
+}
+.addOp {
+  margin-right: 20px;
 }
 </style>

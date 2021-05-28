@@ -13,7 +13,7 @@
         >
           样本审核</router-link
         >
-        <button class="button is-primary" @click="sampleCreateModalOpen = true">
+        <button class="button is-primary" @click="jump">
           上传样本
         </button>
       </div>
@@ -168,6 +168,13 @@ export default {
               self.sampleCreate.labels = {};
             });
         });
+    },
+    jump() {
+      if (!this.$store.state.user.id) {
+        this.$router.push("/login");
+      } else {
+        this.sampleCreateModalOpen=true;
+      }
     },
   },
 };
