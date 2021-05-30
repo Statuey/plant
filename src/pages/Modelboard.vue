@@ -55,8 +55,8 @@
     <template v-slot:footer>
       <button
         class="button is-danger"
-        @click="confirmDeleteModelset(deleteModel.id, deleteModelIndex)"
-        :disabled="deleteModel && deleteModelName !== deleteModel.name"
+        @click="confirmDeleteModelset(deleteModelset.id, deleteModelIndex)"
+        :disabled="deleteModelset && deleteModelsetName !== deleteModelset.name"
       >删除</button>
     </template>
   </Dialog>

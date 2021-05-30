@@ -24,10 +24,10 @@
       <div class="navbar-start">
         <router-link to="/" class="navbar-item">主页</router-link>
         <router-link to="/identify" class="navbar-item">植物识别</router-link>
-        <router-link to="/dashboard" class="navbar-item"
-          >我的数据集</router-link
+        <router-link to="/publicData" class="navbar-item"
+          >数据集</router-link
         >
-        <router-link to="/modelboard" class="navbar-item">我的模型</router-link>
+        <router-link to="/publicModel" class="navbar-item">模型库</router-link>
         <router-link to="/about" class="navbar-item">关于我们</router-link>
       </div>
       <div class="navbar-end">

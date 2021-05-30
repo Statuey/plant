@@ -16,14 +16,15 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <button class="button is-primary" @click="preUploadModel">
+          <button class="button is-primary" v-if="show" @click="preUploadModel">
             上传模型
           </button>
         </div>
       </div>
     </div>
-    <ModelTable v-if="modelset.id" :modelset="modelset" :unchecked="false" />
+    <ModelTable v-if="modelset.id" :modelset="modelset" />
   </div>
+
   <Dialog title="" v-model:open="modelCreateModelOpen">
     <div class="file has-name is-fullwidth mb-3">
       <label class="file-label">
@@ -106,10 +107,12 @@ export default {
     const self = this;
     const { modelsetId } = this.$route.params;
     this.modelsetId = modelsetId;
-
     this.$http.get(`/api/modelsets/${modelsetId}`).then((res) => {
       self.modelset = res.data;
-      console.log(self.modelset);
+      if (self.modelset.creator.username == this.$store.state.user.username) {
+        self.show = true;
+      }
+      console.log(this.modelset.creator.username);
       for (let label of res.data.labels) {
         if (label.type === "enum") {
           self.modelCreate.labels[label.labelId] = label.values[0];
@@ -136,8 +139,7 @@ export default {
         labels: {},
       },
       modelsetId: "",
-      activeTab: 0,
-      tabs: [],
+      show: false,
     };
   },
   methods: {

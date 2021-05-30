@@ -17,7 +17,9 @@ import About from '../pages/About.vue';
 import Modelboard from '../pages/Modelboard.vue';
 import Newmodel from '../pages/Newmodel.vue';
 import Modelset from '../pages/Modelset.vue';
-import Models from '../pages/Models.vue'
+import Publicdata from '../pages/Publicdata.vue';
+import Publicmodel from '../pages/Publicmodel.vue';
+
 const routes = [{
     path: '/',
     component: Home,
@@ -85,18 +87,22 @@ const routes = [{
   {
     path: '/modelsets/:modelsetId',
     component: Modelset,
-    children: [{
-      path: 'models',
-      component: Models,
-      meta: {
-        requireAuth: true,
-      },
-    }, ],
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: '/identify',
     component: Identify,
   },
+  {
+    path: '/publicData',
+    component: Publicdata,
+  },
+  {
+    path: '/publicModel',
+    component: Publicmodel,
+  }
 ];
 
 const router = createRouter({

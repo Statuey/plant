@@ -34,9 +34,9 @@
               <div class="filename">{{ model.originalFilename }}</div>
             </td>
             <td
-              v-for="label in dataset.labels"
+              v-for="label in model.labels"
               :key="label.labelId"
-            >{{ model.labels[label.labelId] }}</td>
+            >{{ label }}</td>
             <td class="actions">
               <div class="buttons has-addons is-right">
                 <a
@@ -97,6 +97,7 @@ export default {
         params[this.filterLabel.labelId] = this.filterLabelValue;
       }
       this.$http.get(url, { params }).then((res) => {
+        console.log(res.data.results);
         this.models = res.data.results;
       });
     },
