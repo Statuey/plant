@@ -1,31 +1,15 @@
 <template>
-  <div class="container">
-    <SampleTable v-if="dataset" :dataset="dataset" :unchecked="true"/>
+  <div class="notification is-info">
+    次列表中的样本数据目前还没有被管理员审查过，我们不能保证下面样本数据的准确性，请酌情下载！
   </div>
+  <SampleTable :dataset="dataset" :unchecked="true" />
 </template>
 
 <script>
 import SampleTable from "../components/SampleTable.vue";
 
 export default {
+  props: ["dataset"],
   components: { SampleTable },
-  data() {
-    return {
-      dataset: undefined,
-    };
-  },
-  mounted() {
-    const { datasetId } = this.$route.params;
-    this.datasetId = datasetId;
-    this.$http.get(`/api/datasets/${datasetId}`).then((res) => {
-      this.dataset = res.data;
-    });
-  },
 };
 </script>
-
-<style scoped>
-.person {
-  margin: 10px;
-}
-</style>

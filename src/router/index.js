@@ -8,6 +8,8 @@ import New from '../pages/New.vue';
 import Dataset from '../pages/Dataset.vue';
 import Identify from '../pages/Identify.vue';
 import Unchecked from '../pages/Unchecked.vue';
+import Samples from '../pages/Samples.vue';
+import Settings from '../pages/Settings.vue';
 
 const routes = [
   {
@@ -39,17 +41,27 @@ const routes = [
   {
     path: '/datasets/:datasetId',
     component: Dataset,
+    children: [
+      {
+        path: '',
+        component: Samples,
+      },
+      {
+        path: 'unchecked',
+        component: Unchecked,
+      },
+      {
+        path: 'settings',
+        component: Settings,
+        meta: {
+          requireAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '/identify',
     component: Identify,
-  },
-  {
-    path: '/datasets/:datasetId/unchecked',
-    component: Unchecked,
-    meta: {
-      requireAuth: true,
-    },
   },
 ];
 

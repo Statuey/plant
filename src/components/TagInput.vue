@@ -1,7 +1,7 @@
 <template>
   <div class="root" @click="focus">
     <div class="field is-grouped is-grouped-multiline">
-      <div class="control" v-for="(tag, index) in modelValue" :key="index">
+      <div class="control" v-for="(tag, index) in modelValue" :key="Number(index)">
         <span class="tags has-addons">
           <span class="tag is-link label-text">{{ tag }}</span>
           <a class="tag is-delete" @click="deleteTag(index)"></a>
