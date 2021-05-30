@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <p class="title">病害识别</p>
-        <p class="subtitle">上传图片识别植物病害</p>
-      </div>
-    </section>
-  </div>
+  <section class="hero is-link">
+    <div class="hero-body">
+      <p class="title logo-text">Identification</p>
+      <p class="subtitle">上传图片识别植物病害</p>
+    </div>
+  </section>
   <div class="container mt-4">
     <div class="field has-addons">
-      <div class="control">
-        <a class="button is-static">选择模型</a>
-      </div>
       <div class="control">
         <div class="select">
           <select>
@@ -39,12 +34,7 @@
                 <div class="file-icon box">
                   <span class="is-size-4 has-text-grey">File</span>
                 </div>
-                <input
-                  class="filename"
-                  type="text"
-                  :value="file.name"
-                  readonly
-                />
+                <input class="filename" type="text" :value="file.name" readonly />
               </div>
             </div>
             <div v-else class="button-wrapper">

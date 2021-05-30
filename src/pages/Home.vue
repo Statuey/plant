@@ -2,7 +2,7 @@
   <div>
     <section class="hero is-primary">
       <div class="hero-body">
-        <p class="title">PlantData</p>
+        <p class="title logo-text">PlantData</p>
         <p class="subtitle">植物病害识别数据管理平台</p>
       </div>
     </section>

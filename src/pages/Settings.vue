@@ -59,8 +59,9 @@
             </div>
           </div>
         </div>
+        <div class="notification is-warning">添加后的枚举值无法被删除，因为其有可能正在被数据集中的样本引用，请谨慎添加！</div>
 
-        <button class="signup-btn button is-link mt-4" @click="addEnum">添加</button>
+        <button class="signup-btn button is-link mt-4" @click="addEnum" :disabled="!tags.length">添加</button>
       </div>
     </div>
   </div>

@@ -2,23 +2,34 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <router-link to="/">
-        <span class="navbar-item is-size-4 has-text-weight-bold"
-          >PlantData</span
-        >
+        <span class="navbar-item is-size-4 has-text-weight-bold logo-text">PlantData</span>
       </router-link>
+
+      <a
+        role="button"
+        class="navbar-burger"
+        :class="{ 'is-active': menu }"
+        aria-label="menu"
+        aria-expanded="false"
+        @click="menu = !menu"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
-    <div class="navbar-menu">
+    <div class="navbar-menu" :class="{ 'is-active': menu }">
+      <div class="navbar-start">
+        <router-link to="/" class="navbar-item">主页</router-link>
+        <router-link to="/identify" class="navbar-item">植物识别</router-link>
+        <router-link to="/about" class="navbar-item">关于我们</router-link>
+      </div>
       <div class="navbar-end">
         <div v-if="user" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">{{ user }}</a>
 
           <div class="navbar-dropdown is-boxed is-right">
-            <router-link to="/identify" class="navbar-item"
-              >植物识别</router-link
-            >
-            <router-link to="/dashboard" class="navbar-item"
-              >我的数据集</router-link
-            >
+            <router-link to="/dashboard" class="navbar-item">我的数据集</router-link>
             <router-link to="/new" class="navbar-item">创建数据集</router-link>
             <hr class="navbar-divider" />
             <a class="navbar-item" @click="logout">退出登录</a>
@@ -46,16 +57,26 @@ export default {
       this.$router.push("/");
     },
   },
+  data() {
+    return {
+      menu: false
+    }
+  },
   computed: {
     user() {
       return this.$store.state.user.username;
     },
   },
+  watch: {
+    $route(to, from) {
+      this.menu = false;
+    }
+  }
 };
 </script>
 
 <style scoped>
 .navbar {
-  border-bottom: 2px solid #f5f5f5;
+  box-shadow: 0 0.125em 0.25em rgb(10 10 10 / 10%);
 }
 </style>

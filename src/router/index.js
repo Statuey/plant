@@ -10,11 +10,16 @@ import Identify from '../pages/Identify.vue';
 import Unchecked from '../pages/Unchecked.vue';
 import Samples from '../pages/Samples.vue';
 import Settings from '../pages/Settings.vue';
+import About from '../pages/About.vue';
 
 const routes = [
   {
     path: '/',
     component: Home,
+  },
+  {
+    path: '/about',
+    component: About,
   },
   {
     path: '/login',

@@ -1,17 +1,23 @@
 <template>
   <div class="container">
-    <div class="header mt-4 mb-4">
-      <span class="is-flex-grow-1 title is-4 mb-0">
-        <span class="tag is-large is-link is-light">
-          {{
-            dataset.creator.username
-          }}
-        </span>
-        /
-        <span class="tag is-large is-primary is-light">{{ dataset.name }}</span>
-      </span>
-      <div class="buttons">
-        <button class="button is-primary" @click="preUploadSample">上传样本</button>
+    <div class="mt-4 mb-4 level">
+      <div class="level-left">
+        <div class="level-item">
+          <span class="title is-4 mb-0">
+            <span class="tag is-large is-link is-light">
+              {{
+                dataset.creator.username
+              }}
+            </span>
+            /
+            <span class="tag is-large is-primary is-light">{{ dataset.name }}</span>
+          </span>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <button class="button is-primary" @click="preUploadSample">上传样本</button>
+        </div>
       </div>
     </div>
     <div class="tabs">
@@ -48,6 +54,20 @@
 
     <div class="field" v-for="label in dataset.labels" :key="label.labelId">
       <label class="label">{{ label.labelName }}</label>
+      <div class="field is-grouped" v-if="label.type === 'number'">
+        <div class="control" v-if="label.minNum">
+          <div class="tags has-addons">
+            <span class="tag is-dark">最小值</span>
+            <span class="tag is-info">{{ label.minNum }}</span>
+          </div>
+        </div>
+        <div class="control" v-if="label.maxNum">
+          <div class="tags has-addons">
+            <span class="tag is-dark">最大值</span>
+            <span class="tag is-info">{{ label.maxNum }}</span>
+          </div>
+        </div>
+      </div>
       <div class="control">
         <input
           v-if="label.type === 'number'"
@@ -197,11 +217,10 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  display: flex;
-  align-items: center;
-}
 .bi {
   margin-left: 10px;
+}
+.level-item {
+  justify-content: start;
 }
 </style>

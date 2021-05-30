@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="right">
-      <div class="level">
+      <div class="level is-mobile">
         <div class="level-left">
           <div class="level-item">
             <h6 class="title is-6 head mb-0">我创建的数据集</h6>
@@ -135,6 +135,12 @@ export default {
 
 .left {
   width: 300px;
+}
+
+@media screen and (max-width: 1023px) {
+  .left {
+    display: none;
+  }
 }
 
 .right {
