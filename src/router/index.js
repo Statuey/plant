@@ -1,4 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory
+} from 'vue-router';
 
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
@@ -11,9 +14,11 @@ import Unchecked from '../pages/Unchecked.vue';
 import Samples from '../pages/Samples.vue';
 import Settings from '../pages/Settings.vue';
 import About from '../pages/About.vue';
-
-const routes = [
-  {
+import Modelboard from '../pages/Modelboard.vue';
+import Newmodel from '../pages/Newmodel.vue';
+import Modelset from '../pages/Modelset.vue';
+import Models from '../pages/Models.vue'
+const routes = [{
     path: '/',
     component: Home,
   },
@@ -44,10 +49,23 @@ const routes = [
     },
   },
   {
+    path: '/modelboard',
+    component: Modelboard,
+    meta: {
+      requireAuth: true,
+    },
+  },
+  {
+    path: '/newmodel',
+    component: Newmodel,
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
     path: '/datasets/:datasetId',
     component: Dataset,
-    children: [
-      {
+    children: [{
         path: '',
         component: Samples,
       },
@@ -63,6 +81,17 @@ const routes = [
         },
       },
     ],
+  },
+  {
+    path: '/modelsets/:modelsetId',
+    component: Modelset,
+    children: [{
+      path: 'models',
+      component: Models,
+      meta: {
+        requireAuth: true,
+      },
+    }, ],
   },
   {
     path: '/identify',
