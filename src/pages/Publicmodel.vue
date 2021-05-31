@@ -26,10 +26,14 @@ export default {
   data() {
     return {
       modelsets: [],
+      user: undefined,
     };
   },
   mounted() {
-    this.$http.get("/api/modelsets").then((res) => {
+    const user = "admin";
+    this.user = user;
+    this.$http.get("/api/modelsets",{ params: { user } }).then((res) => {
+      console.log(res.data);
       this.modelsets = res.data.results;
     });
   },

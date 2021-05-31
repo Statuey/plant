@@ -74,6 +74,7 @@ export default {
     this.user = user;
     this.$http.get("/api/datasets", { params: { user } }).then((res) => {
       this.datasets = res.data.results;
+          console.log(res.data);
     });
   },
   data() {

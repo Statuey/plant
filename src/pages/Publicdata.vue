@@ -8,7 +8,11 @@
     </section>
     <div class="container mt-4">
       <div class="columns is-multiline">
-        <div class="column is-12-mobile is-3-fullhd is-4-desktop is-6-tablet" v-for="dataset in datasets" :key="dataset.id">
+        <div
+          class="column is-12-mobile is-3-fullhd is-4-desktop is-6-tablet"
+          v-for="dataset in datasets"
+          :key="dataset.id"
+        >
           <DatasetCard :dataset="dataset" />
         </div>
       </div>
@@ -23,10 +27,14 @@ export default {
   data() {
     return {
       datasets: [],
+      user: undefined,
     };
   },
   mounted() {
-    this.$http.get("/api/datasets").then((res) => {
+    const user = "admin";
+    this.user = user;
+    this.$http.get("/api/datasets",{ params: { user } }).then((res) => {
+      console.log(res.data);
       this.datasets = res.data.results;
     });
   },

@@ -20,7 +20,7 @@
       <div class="control">
         <button class="button" @click="cancel">重置</button>
       </div>
-      <div v-if="file" class="control">
+      <div  class="control">
         <button class="button is-primary" @click="identify">开始识别</button>
       </div>
     </div>

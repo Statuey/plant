@@ -87,9 +87,6 @@ const routes = [{
   {
     path: '/modelsets/:modelsetId',
     component: Modelset,
-    meta: {
-      requireAuth: true,
-    },
   },
   {
     path: '/identify',
