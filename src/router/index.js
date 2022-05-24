@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHistory
-} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
@@ -19,8 +16,10 @@ import Newmodel from '../pages/Newmodel.vue';
 import Modelset from '../pages/Modelset.vue';
 import Publicdata from '../pages/Publicdata.vue';
 import Publicmodel from '../pages/Publicmodel.vue';
+import UserAdmin from '../pages/UserAdmin.vue';
 
-const routes = [{
+const routes = [
+  {
     path: '/',
     component: Home,
   },
@@ -62,12 +61,13 @@ const routes = [{
     component: Newmodel,
     meta: {
       requireAuth: true,
-    }
+    },
   },
   {
     path: '/datasets/:datasetId',
     component: Dataset,
-    children: [{
+    children: [
+      {
         path: '',
         component: Samples,
       },
@@ -99,7 +99,14 @@ const routes = [{
   {
     path: '/publicModel',
     component: Publicmodel,
-  }
+  },
+  {
+    path: '/userAdmin',
+    component: UserAdmin,
+    meta: {
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({

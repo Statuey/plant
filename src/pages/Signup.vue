@@ -17,6 +17,13 @@
       </div>
 
       <div class="field">
+        <label class="label">邮箱</label>
+        <div class="control">
+          <input class="input" type="email" v-model="email" />
+        </div>
+      </div>
+
+      <div class="field">
         <label class="label">重复密码</label>
         <div class="control">
           <input class="input" type="password" v-model="repeatPassword" />
@@ -42,6 +49,7 @@ export default {
     return {
       username: "",
       password: "",
+      email: "",
       repeatPassword: "",
       tips: false,
     };
@@ -53,6 +61,7 @@ export default {
         .post("/api/signup", {
           username: this.username,
           password: this.password,
+          email: this.email,
         })
         .then((res) => {
           this.$router.push("/login");
@@ -77,7 +86,7 @@ export default {
   max-width: 500px;
   margin: 2rem auto 0 auto;
 }
-.warn{
+.warn {
   margin-top: 10px;
 }
 </style>

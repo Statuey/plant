@@ -6,6 +6,7 @@ import router from './router';
 import axios from 'axios';
 import humps from 'humps';
 import dayjs from 'dayjs';
+import vClickOutside from 'click-outside-vue3';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/zh-cn';
@@ -15,6 +16,8 @@ dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 
 const app = createApp(App);
+
+app.use(vClickOutside);
 
 const api = axios.create({
   transformResponse: [
